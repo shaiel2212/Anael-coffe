@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('employees', {
       id: { type: Sequelize.UUID, defaultValue: Sequelize.UUIDV4, primaryKey: true, allowNull: false },
-      cafe_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'cafes', key: 'id' }, onUpdate: 'CASCADE', onDelete: 'CASCADE' },
+      cafe_id: { type: Sequelize.UUID, allowNull: false },
       name: { type: Sequelize.STRING(255), allowNull: false },
       phone: { type: Sequelize.STRING(20), allowNull: true },
       email: { type: Sequelize.STRING(255), allowNull: true },

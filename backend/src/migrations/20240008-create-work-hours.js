@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('work_hours', {
       id: { type: Sequelize.UUID, defaultValue: Sequelize.UUIDV4, primaryKey: true, allowNull: false },
-      employee_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'employees', key: 'id' }, onUpdate: 'CASCADE', onDelete: 'CASCADE' },
+      employee_id: { type: Sequelize.UUID, allowNull: false },
       date: { type: Sequelize.DATEONLY, allowNull: false },
       clock_in: { type: Sequelize.TIME, allowNull: false },
       clock_out: { type: Sequelize.TIME, allowNull: true },
