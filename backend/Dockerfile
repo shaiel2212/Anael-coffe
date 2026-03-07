@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "node scripts/db-reset.js && npm run migrate && npm start"]
