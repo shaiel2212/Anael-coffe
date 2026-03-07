@@ -4,7 +4,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('inventory_items', {
       id: { type: Sequelize.UUID, defaultValue: Sequelize.UUIDV4, primaryKey: true, allowNull: false },
-      cafe_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'cafes', key: 'id' }, onUpdate: 'CASCADE', onDelete: 'CASCADE' },
+      cafe_id: { type: Sequelize.UUID, allowNull: false },
       name: { type: Sequelize.STRING(255), allowNull: false },
       unit: { type: Sequelize.STRING(50), allowNull: false },
       current_quantity: { type: Sequelize.DECIMAL(10, 3), allowNull: false, defaultValue: 0 },
