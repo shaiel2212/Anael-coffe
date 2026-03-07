@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Backend for cafe management platform",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",

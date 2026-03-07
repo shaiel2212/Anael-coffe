@@ -15,8 +15,19 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+
+const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000')
+  .split(',')
+  .map(o => o.trim());
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.some(o => origin === o || origin.endsWith('.vercel.app'))) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    }
+  },
   credentials: true,
 }));
 app.use(compression());
@@ -36,9 +47,9 @@ const start = async () => {
 
     if (process.env.NODE_ENV !== 'production') {
       await seed();
-    } else {
-      await sequelize.sync({ alter: false });
     }
+    // In production, Railway runs: npm run migrate && npm start
+    // so migrations are already applied before server starts
 
     app.listen(PORT, () => {
       logger.info(`Server running on port ${PORT}`);
