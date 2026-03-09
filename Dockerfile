@@ -9,4 +9,4 @@ COPY backend/ .
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "npm run migrate && node scripts/seed-if-empty.js && npm start"]
+CMD ["sh", "-c", "npm run migrate && node scripts/seed-if-empty.js && node scripts/ensure-admin.js && npm start"]
