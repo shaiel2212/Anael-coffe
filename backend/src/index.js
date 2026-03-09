@@ -15,6 +15,9 @@ const seed = require('./utils/seed');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Railway (and most PaaS) sit behind a reverse proxy - trust it for correct IP/rate-limit
+app.set('trust proxy', 1);
+
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000')
