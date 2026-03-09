@@ -32,6 +32,10 @@ const login = async (req, res, next) => {
       return res.status(401).json({ error: 'ERR001', message: 'Invalid credentials' });
     }
 
+    if (!user.cafe) {
+      return res.status(500).json({ error: 'ERR', message: 'User cafe not found' });
+    }
+
     const { accessToken, refreshToken } = generateTokens(user.id, user.cafe_id, user.role);
     await user.update({ refresh_token: refreshToken, last_login_at: new Date() });
 

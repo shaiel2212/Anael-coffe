@@ -23,7 +23,10 @@ async function seedIfEmpty() {
       console.log(`[seed-if-empty] ${count} cafe(s) already exist — skipping seed`);
     } else {
       console.log('[seed-if-empty] Database is empty — running seed...');
-      execSync('npx sequelize-cli db:seed:all', { stdio: 'inherit' });
+      execSync('npx sequelize-cli db:seed:all', {
+        stdio: 'inherit',
+        env: { ...process.env, NODE_ENV: 'production' },
+      });
       console.log('[seed-if-empty] Seed completed.');
     }
   } catch (err) {
@@ -32,6 +35,10 @@ async function seedIfEmpty() {
   } finally {
     if (conn) await conn.end();
   }
+  process.exit(0);
 }
 
-seedIfEmpty();
+seedIfEmpty().catch((err) => {
+  console.error('[seed-if-empty] Fatal:', err);
+  process.exit(1);
+});

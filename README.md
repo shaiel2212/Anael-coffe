@@ -29,8 +29,37 @@ docker-compose up --build
 - **פאנל ניהול**: http://localhost:3000/admin
 
 ### פרטי כניסה ברירת מחדל
-- **Email**: admin@mycafe.com
-- **Password**: admin123
+- **Email**: admin@mycafe.com  
+- **Password**: admin123  
+
+**משתמש נוסף (אם הוספת via סקריפט):** daminshaiel@coffe.com / Aa123456
+
+## פרוד (Production) – אין רישום
+
+באפליקציה **אין דף הרשמה**. כל המשתמשים נוצרים רק במסד הנתונים.
+
+**פרטי כניסה בפרוד** – אותם כמו למעלה, **אבל** חייבים ליצור אותם במסד הנתונים של הפרוד:
+
+1. **אפשרות א:** הרצת מיגרציות + seed על מסד הפרוד:
+   ```bash
+   NODE_ENV=production npm run migrate
+   NODE_ENV=production npm run seed
+   ```
+   אחרי זה: **admin@mycafe.com** / **admin123**
+
+2. **אפשרות ב:** הרצת הסקריפט להוספת משתמש (נגד מסד הפרוד, עם .env שמכוון ל-DB של הפרוד):
+   ```bash
+   node scripts/add-user-daminshaiel.js
+   ```
+   אחרי זה: **daminshaiel@coffe.com** / **Aa123456**
+
+3. **אפשרות ג:** הרצת `mysql-workbench-setup.sql` (או החלק של ה-INSERT) על מסד הפרוד – נוצר **admin@mycafe.com** / **admin123**.
+
+**סיכום – פרטי כניסה לפרוד (אחרי שיצרת אותם במסד):**
+| אימייל | סיסמה |
+|--------|--------|
+| admin@mycafe.com | admin123 |
+| daminshaiel@coffe.com | Aa123456 (אם הרצת את סקריפט add-user) |
 
 ## הרצה מקומית (ללא Docker)
 
@@ -49,6 +78,16 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## פריסה ב-Vercel (למניעת 404)
+
+כדי שהאתר לא יחזיר 404 בנתיבים כמו `/admin` או `/login`:
+
+1. ב-**Vercel Dashboard** → הפרויקט → **Settings** → **General**
+2. ב-**Root Directory** לחץ **Edit** ובחר את התיקייה **`frontend`** (לא את שורש ה-repo)
+3. שמור והפעל **Redeploy**
+
+אם Root Directory לא מוגדר ל-`frontend`, Vercel בונה משורש הריפו ולא מוצא אפליקציה, ולכן מתקבל 404.
 
 ## מבנה הפרויקט
 
