@@ -2,7 +2,7 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "npm run migrate && node scripts/seed-if-empty.js && npm start"
+startCommand = "npm run migrate && node scripts/seed-if-empty.js && node scripts/ensure-admin.js && npm start"
 healthcheckPath = "/api/v1/health"
 healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"
