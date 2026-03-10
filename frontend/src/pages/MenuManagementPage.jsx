@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { QrCode, Plus, Pencil, Trash2, Eye, EyeOff, Download } from 'lucide-react';
 import api from '../utils/api';
@@ -22,28 +22,28 @@ function CategoryForm({ category, onSubmit, onCancel }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       {[['name_he', t('menu.nameHe'), true], ['name_en', t('menu.nameEn'), false], ['name_ru', t('menu.nameRu'), false]].map(([field, label, required]) => (
         <div key={field}>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{label}</label>
           <input value={form[field]} onChange={(e) => setForm({ ...form, [field]: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-3 py-2 rustic-input"
             required={required} />
         </div>
       ))}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('menu.displayOrder')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('menu.displayOrder')}</label>
           <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
         <div className="flex items-end pb-2">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.is_visible} onChange={(e) => setForm({ ...form, is_visible: e.target.checked })} className="w-4 h-4 rounded" />
-            <span className="text-sm font-medium text-gray-700">{t('menu.visible')}</span>
+            <span className="text-sm font-medium text-rustic-ink">{t('menu.visible')}</span>
           </label>
         </div>
       </div>
       <div className="flex gap-3 justify-end pt-2">
-        <button type="button" onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">{t('common.cancel')}</button>
-        <button type="submit" className="px-4 py-2 bg-amber-700 text-white rounded-xl hover:bg-amber-800">{t('common.save')}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 border border-rustic-sand rounded-xl text-rustic-inkSoft hover:bg-rustic-sand/20">{t('common.cancel')}</button>
+        <button type="submit" className="px-4 py-2 rustic-btn-primary">{t('common.save')}</button>
       </div>
     </form>
   );
@@ -59,11 +59,14 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
     name_ru: product?.name_ru || '',
     description_he: product?.description_he || '',
     price: product?.price || '',
+    image_url: product?.image_url || '',
     allergens: product?.allergens || [],
     is_available: product?.is_available !== false,
     is_visible: product?.is_visible !== false,
     display_order: product?.display_order || 0,
   });
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const toggleAllergen = (a) => {
     setForm(prev => ({
@@ -72,47 +75,93 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
     }));
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append('image', file);
+      const { data } = await api.post('/menu/upload', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setForm(prev => ({ ...prev, image_url: data.url }));
+      toast.success(t('common.success'));
+    } catch (err) {
+      toast.error(err.response?.data?.message || t('common.error'));
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
+
   const handleSubmit = (e) => { e.preventDefault(); onSubmit(form); };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t('menu.category')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('menu.category')}</label>
         <select value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+          className="w-full px-3 py-2 rustic-input" required>
           {categories.map(c => <option key={c.id} value={c.id}>{c.name_he}</option>)}
         </select>
       </div>
+      <div>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('menu.productImage')}</label>
+        <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={handleImageUpload} className="hidden" />
+        <div className="flex items-center gap-3 flex-wrap">
+          {form.image_url ? (
+            <>
+              <img src={form.image_url} alt="" className="w-24 h-24 rounded-xl object-cover ring-1 ring-rustic-sand/40" />
+              <div className="flex gap-2">
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading}
+                  className="px-3 py-1.5 text-sm border border-rustic-sand rounded-lg text-rustic-inkSoft hover:bg-rustic-sand/20 disabled:opacity-50">
+                  {uploading ? t('common.loading') : t('menu.uploadImage')}
+                </button>
+                <button type="button" onClick={() => setForm(prev => ({ ...prev, image_url: '' }))}
+                  className="px-3 py-1.5 text-sm border border-red-200 rounded-lg text-red-500 hover:bg-red-50">
+                  {t('menu.removeImage')}
+                </button>
+              </div>
+            </>
+          ) : (
+            <button type="button" onClick={() => fileInputRef.current?.click()} disabled={uploading}
+              className="px-4 py-2 border border-dashed border-rustic-sand rounded-xl text-rustic-inkSoft hover:bg-rustic-sand/20 disabled:opacity-50">
+              {uploading ? t('common.loading') : t('menu.uploadImage')}
+            </button>
+          )}
+        </div>
+      </div>
       {[['name_he', t('menu.nameHe'), true], ['name_en', t('menu.nameEn'), false], ['name_ru', t('menu.nameRu'), false]].map(([field, label, required]) => (
         <div key={field}>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{label}</label>
           <input value={form[field]} onChange={(e) => setForm({ ...form, [field]: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required={required} />
+            className="w-full px-3 py-2 rustic-input" required={required} />
         </div>
       ))}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t('menu.description')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('menu.description')}</label>
         <textarea value={form.description_he} onChange={(e) => setForm({ ...form, description_he: e.target.value })}
-          rows={2} className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 resize-none" />
+          rows={2} className="w-full px-3 py-2 rustic-input resize-none" />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('menu.price')} (₪)</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('menu.price')} (₪)</label>
           <input type="number" step="0.01" min="0" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required />
+            className="w-full px-3 py-2 rustic-input" required />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('menu.displayOrder')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('menu.displayOrder')}</label>
           <input type="number" value={form.display_order} onChange={(e) => setForm({ ...form, display_order: parseInt(e.target.value) })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">{t('menu.allergens')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-2">{t('menu.allergens')}</label>
         <div className="flex flex-wrap gap-2">
           {ALLERGENS.map(a => (
             <button key={a} type="button" onClick={() => toggleAllergen(a)}
-              className={`px-3 py-1 text-xs rounded-full border transition-colors ${form.allergens.includes(a) ? 'bg-amber-100 border-amber-400 text-amber-800' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}>
+              className={`px-3 py-1 text-xs rounded-full border transition-colors ${form.allergens.includes(a) ? 'bg-rustic-sand/50 border-rustic-wood text-rustic-wood' : 'border-rustic-sand/60 text-rustic-inkSoft hover:bg-rustic-sand/20'}`}>
               {a}
             </button>
           ))}
@@ -122,13 +171,13 @@ function ProductForm({ product, categories, onSubmit, onCancel }) {
         {[['is_available', t('menu.available')], ['is_visible', t('menu.visible')]].map(([field, label]) => (
           <label key={field} className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form[field]} onChange={(e) => setForm({ ...form, [field]: e.target.checked })} className="w-4 h-4 rounded" />
-            <span className="text-sm font-medium text-gray-700">{label}</span>
+            <span className="text-sm font-medium text-rustic-ink">{label}</span>
           </label>
         ))}
       </div>
       <div className="flex gap-3 justify-end pt-2">
-        <button type="button" onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">{t('common.cancel')}</button>
-        <button type="submit" className="px-4 py-2 bg-amber-700 text-white rounded-xl hover:bg-amber-800">{t('common.save')}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 border border-rustic-sand rounded-xl text-rustic-inkSoft hover:bg-rustic-sand/20">{t('common.cancel')}</button>
+        <button type="submit" className="px-4 py-2 rustic-btn-primary">{t('common.save')}</button>
       </div>
     </form>
   );
@@ -226,17 +275,17 @@ export default function MenuManagementPage() {
   return (
     <div className="space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">{t('menu.title')}</h1>
+        <h1 className="text-2xl font-heading font-semibold text-rustic-ink">{t('menu.title')}</h1>
       </div>
 
       {/* QR Code section */}
       {qrCode && (
-        <div className="bg-white rounded-2xl shadow-sm p-5 flex items-center gap-6">
+        <div className="rustic-card p-5 flex items-center gap-6">
           <img src={qrCode} alt="QR Code" className="w-28 h-28 rounded-xl" />
           <div>
-            <h2 className="font-semibold text-gray-900 flex items-center gap-2"><QrCode className="w-5 h-5" /> {t('menu.qrCode')}</h2>
-            <p className="text-sm text-gray-500 mt-1 break-all">{menuUrl}</p>
-            <button onClick={downloadQR} className="mt-3 flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-xl text-sm hover:bg-amber-800 transition-colors">
+            <h2 className="font-semibold text-rustic-ink flex items-center gap-2"><QrCode className="w-5 h-5" /> {t('menu.qrCode')}</h2>
+            <p className="text-sm text-rustic-inkSoft mt-1 break-all">{menuUrl}</p>
+            <button onClick={downloadQR} className="mt-3 flex items-center gap-2 px-4 py-2 rustic-btn-primary text-sm transition-colors">
               <Download className="w-4 h-4" /> {t('menu.downloadQR')}
             </button>
           </div>
@@ -244,38 +293,38 @@ export default function MenuManagementPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit">
+      <div className="flex gap-2 bg-rustic-sand/30 p-1 rounded-xl w-fit">
         {['categories', 'products'].map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-800'}`}>
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab ? 'bg-rustic-linen shadow-rustic text-rustic-ink' : 'text-rustic-inkSoft hover:text-rustic-ink'}`}>
             {t(`menu.${tab}`)}
           </button>
         ))}
       </div>
 
       {activeTab === 'categories' && (
-        <div className="bg-white rounded-2xl shadow-sm">
-          <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">{t('menu.categories')}</h2>
+        <div className="rustic-card">
+          <div className="p-5 border-b border-rustic-sand/40 flex items-center justify-between">
+            <h2 className="font-semibold text-rustic-ink">{t('menu.categories')}</h2>
             <button onClick={() => setModal({ open: true, type: 'category', data: null })}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-xl text-sm hover:bg-amber-800">
+              className="flex items-center gap-2 px-4 py-2 rustic-btn-primary text-sm">
               <Plus className="w-4 h-4" /> {t('menu.addCategory')}
             </button>
           </div>
-          <div className="divide-y divide-gray-100">
-            {loading ? <div className="p-8 text-center text-gray-400">{t('common.loading')}</div> :
-              categories.length === 0 ? <div className="p-8 text-center text-gray-400">אין קטגוריות</div> :
+          <div className="divide-y divide-rustic-sand/40">
+            {loading ? <div className="p-8 text-center text-rustic-inkSoft">{t('common.loading')}</div> :
+              categories.length === 0 ? <div className="p-8 text-center text-rustic-inkSoft">אין קטגוריות</div> :
                 categories.map(cat => (
-                  <div key={cat.id} className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+                  <div key={cat.id} className="flex items-center justify-between p-4 hover:bg-rustic-sand/20 transition-colors">
                     <div>
-                      <p className="font-medium text-gray-900">{cat.name_he}</p>
-                      <p className="text-sm text-gray-400">{cat.name_en} {cat.name_ru && `/ ${cat.name_ru}`}</p>
+                      <p className="font-medium text-rustic-ink">{cat.name_he}</p>
+                      <p className="text-sm text-rustic-inkSoft">{cat.name_en} {cat.name_ru && `/ ${cat.name_ru}`}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${cat.is_visible ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${cat.is_visible ? 'bg-green-100 text-green-700' : 'bg-rustic-sand/40 text-rustic-inkSoft'}`}>
                         {cat.is_visible ? t('common.active') : t('common.inactive')}
                       </span>
-                      <button onClick={() => setModal({ open: true, type: 'category', data: cat })} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+                      <button onClick={() => setModal({ open: true, type: 'category', data: cat })} className="p-2 hover:bg-rustic-sand/30 rounded-lg text-rustic-inkSoft">
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button onClick={() => setDeleteDialog({ open: true, type: 'category', id: cat.id })} className="p-2 hover:bg-red-50 rounded-lg text-red-400">
@@ -289,42 +338,42 @@ export default function MenuManagementPage() {
       )}
 
       {activeTab === 'products' && (
-        <div className="bg-white rounded-2xl shadow-sm">
-          <div className="p-5 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+        <div className="rustic-card">
+          <div className="p-5 border-b border-rustic-sand/40 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <h2 className="font-semibold text-gray-900">{t('menu.products')}</h2>
+              <h2 className="font-semibold text-rustic-ink">{t('menu.products')}</h2>
               <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}
-                className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                className="text-sm px-3 py-1.5 rustic-input text-sm py-1.5 px-3">
                 <option value="">כל הקטגוריות</option>
                 {categories.map(c => <option key={c.id} value={c.id}>{c.name_he}</option>)}
               </select>
             </div>
             <button onClick={() => setModal({ open: true, type: 'product', data: null })}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-xl text-sm hover:bg-amber-800">
+              className="flex items-center gap-2 px-4 py-2 rustic-btn-primary text-sm">
               <Plus className="w-4 h-4" /> {t('menu.addProduct')}
             </button>
           </div>
-          <div className="divide-y divide-gray-100">
-            {loading ? <div className="p-8 text-center text-gray-400">{t('common.loading')}</div> :
-              filteredProducts.length === 0 ? <div className="p-8 text-center text-gray-400">אין מוצרים</div> :
+          <div className="divide-y divide-rustic-sand/40">
+            {loading ? <div className="p-8 text-center text-rustic-inkSoft">{t('common.loading')}</div> :
+              filteredProducts.length === 0 ? <div className="p-8 text-center text-rustic-inkSoft">אין מוצרים</div> :
                 filteredProducts.map(prod => (
-                  <div key={prod.id} className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors">
+                  <div key={prod.id} className="flex items-center justify-between p-4 hover:bg-rustic-sand/20 transition-colors">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-gray-900">{prod.name_he}</p>
+                        <p className="font-medium text-rustic-ink">{prod.name_he}</p>
                         {prod.allergens?.length > 0 && (
-                          <span className="text-xs text-amber-600">{prod.allergens.join(', ')}</span>
+                          <span className="text-xs text-rustic-wood">{prod.allergens.join(', ')}</span>
                         )}
                       </div>
-                      <p className="text-sm text-gray-400">{prod.name_en}</p>
+                      <p className="text-sm text-rustic-inkSoft">{prod.name_en}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="font-bold text-amber-700">₪{parseFloat(prod.price).toFixed(2)}</span>
+                      <span className="font-bold text-rustic-wood">₪{parseFloat(prod.price).toFixed(2)}</span>
                       <div className="flex items-center gap-1">
-                        {!prod.is_visible && <EyeOff className="w-4 h-4 text-gray-400" />}
+                        {!prod.is_visible && <EyeOff className="w-4 h-4 text-rustic-inkSoft" />}
                         {!prod.is_available && <span className="text-xs text-red-500">לא זמין</span>}
                       </div>
-                      <button onClick={() => setModal({ open: true, type: 'product', data: prod })} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+                      <button onClick={() => setModal({ open: true, type: 'product', data: prod })} className="p-2 hover:bg-rustic-sand/30 rounded-lg text-rustic-inkSoft">
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button onClick={() => setDeleteDialog({ open: true, type: 'product', id: prod.id })} className="p-2 hover:bg-red-50 rounded-lg text-red-400">

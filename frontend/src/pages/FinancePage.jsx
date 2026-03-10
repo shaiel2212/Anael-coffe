@@ -24,11 +24,11 @@ function RecordForm({ record, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t('finance.type')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('finance.type')}</label>
         <div className="grid grid-cols-2 gap-2">
           {['income', 'expense'].map(type => (
             <button key={type} type="button" onClick={() => setForm({ ...form, type, category: '' })}
-              className={`py-2 rounded-xl text-sm font-medium border transition-colors ${form.type === type ? (type === 'income' ? 'bg-green-600 text-white border-green-600' : 'bg-red-600 text-white border-red-600') : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+              className={`py-2 rounded-xl text-sm font-medium border transition-colors ${form.type === type ? (type === 'income' ? 'bg-green-600 text-white border-green-600' : 'bg-red-600 text-white border-red-600') : 'border-rustic-sand/60 text-rustic-inkSoft hover:bg-rustic-sand/20'}`}>
               {t(`finance.${type}`)}
             </button>
           ))}
@@ -36,32 +36,32 @@ function RecordForm({ record, onSubmit, onCancel }) {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('finance.category')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('finance.category')}</label>
           <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+            className="w-full px-3 py-2 rustic-input">
             <option value="">בחר קטגוריה</option>
             {categories.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('finance.amount')} (₪)</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('finance.amount')} (₪)</label>
           <input type="number" step="0.01" min="0" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required />
+            className="w-full px-3 py-2 rustic-input" required />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t('finance.date')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('finance.date')}</label>
         <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required />
+          className="w-full px-3 py-2 rustic-input" required />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t('finance.description')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('finance.description')}</label>
         <input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          className="w-full px-3 py-2 rustic-input" />
       </div>
       <div className="flex gap-3 justify-end pt-2">
-        <button type="button" onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">{t('common.cancel')}</button>
-        <button type="submit" className="px-4 py-2 bg-amber-700 text-white rounded-xl hover:bg-amber-800">{t('common.save')}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 border border-rustic-sand rounded-xl text-rustic-inkSoft hover:bg-rustic-sand/20">{t('common.cancel')}</button>
+        <button type="submit" className="px-4 py-2 rustic-btn-primary">{t('common.save')}</button>
       </div>
     </form>
   );
@@ -125,9 +125,9 @@ export default function FinancePage() {
   return (
     <div className="space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">{t('finance.title')}</h1>
+        <h1 className="text-2xl font-heading font-semibold text-rustic-ink">{t('finance.title')}</h1>
         <button onClick={() => setModal({ open: true, data: null })}
-          className="flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-xl text-sm hover:bg-amber-800">
+          className="flex items-center gap-2 rustic-btn-primary text-sm px-4 py-2">
           <Plus className="w-4 h-4" /> {t('finance.addRecord')}
         </button>
       </div>
@@ -135,30 +135,30 @@ export default function FinancePage() {
       {/* Summary Cards */}
       {summary && (
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <div className="rustic-card p-5">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-green-600" />
               </div>
-              <p className="text-sm text-gray-500">{t('finance.totalIncome')}</p>
+              <p className="text-sm text-rustic-inkSoft">{t('finance.totalIncome')}</p>
             </div>
             <p className="text-2xl font-bold text-green-600">₪{summary.total_income.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <div className="rustic-card p-5">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center">
                 <TrendingDown className="w-5 h-5 text-red-600" />
               </div>
-              <p className="text-sm text-gray-500">{t('finance.totalExpense')}</p>
+              <p className="text-sm text-rustic-inkSoft">{t('finance.totalExpense')}</p>
             </div>
             <p className="text-2xl font-bold text-red-600">₪{summary.total_expense.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <div className="rustic-card p-5">
             <div className="flex items-center gap-3 mb-2">
               <div className={`w-10 h-10 ${summary.net_profit >= 0 ? 'bg-green-50' : 'bg-red-50'} rounded-xl flex items-center justify-center`}>
                 <DollarSign className={`w-5 h-5 ${summary.net_profit >= 0 ? 'text-green-600' : 'text-red-600'}`} />
               </div>
-              <p className="text-sm text-gray-500">{t('finance.netProfit')}</p>
+              <p className="text-sm text-rustic-inkSoft">{t('finance.netProfit')}</p>
             </div>
             <p className={`text-2xl font-bold ${summary.net_profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               ₪{summary.net_profit.toFixed(2)}
@@ -171,38 +171,38 @@ export default function FinancePage() {
       <div className="flex gap-2">
         {[['', 'הכל'], ['income', t('finance.income')], ['expense', t('finance.expense')]].map(([val, label]) => (
           <button key={val} onClick={() => setFilter({ type: val, page: 1 })}
-            className={`px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${filter.type === val ? 'bg-amber-700 text-white border-amber-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+            className={`px-4 py-2 rounded-xl text-sm font-medium border transition-colors ${filter.type === val ? 'bg-amber-700 text-white border-amber-700' : 'border-rustic-sand/60 text-rustic-inkSoft hover:bg-rustic-sand/20'}`}>
             {label}
           </button>
         ))}
       </div>
 
       {/* Records Table */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      <div className="rustic-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
                 {[t('finance.date'), t('finance.type'), t('finance.category'), t('finance.description'), t('finance.amount'), t('common.actions')].map(h => (
-                  <th key={h} className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{h}</th>
+                  <th key={h} className="px-4 py-3 text-right text-xs font-medium text-rustic-inkSoft uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-rustic-sand/40">
               {loading ? (
-                <tr><td colSpan={6} className="text-center py-8 text-gray-400">{t('common.loading')}</td></tr>
+                <tr><td colSpan={6} className="text-center py-8 text-rustic-inkSoft">{t('common.loading')}</td></tr>
               ) : records.length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-8 text-gray-400">אין רשומות</td></tr>
+                <tr><td colSpan={6} className="text-center py-8 text-rustic-inkSoft">אין רשומות</td></tr>
               ) : records.map(rec => (
-                <tr key={rec.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-gray-600 text-sm">{rec.date}</td>
+                <tr key={rec.id} className="hover:bg-rustic-sand/20">
+                  <td className="px-4 py-3 text-rustic-inkSoft text-sm">{rec.date}</td>
                   <td className="px-4 py-3">
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${rec.type === 'income' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                       {t(`finance.${rec.type}`)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-sm">{rec.category || '-'}</td>
-                  <td className="px-4 py-3 text-gray-600 text-sm">{rec.description || '-'}</td>
+                  <td className="px-4 py-3 text-rustic-inkSoft text-sm">{rec.category || '-'}</td>
+                  <td className="px-4 py-3 text-rustic-inkSoft text-sm">{rec.description || '-'}</td>
                   <td className="px-4 py-3">
                     <span className={`font-bold ${rec.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
                       {rec.type === 'expense' ? '-' : '+'}₪{parseFloat(rec.amount).toFixed(2)}
@@ -210,7 +210,7 @@ export default function FinancePage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => setModal({ open: true, data: rec })} className="p-1.5 hover:bg-gray-100 rounded-lg text-gray-500">
+                      <button onClick={() => setModal({ open: true, data: rec })} className="p-1.5 hover:bg-rustic-sand/30 rounded-lg text-rustic-inkSoft">
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button onClick={() => setDeleteDialog({ open: true, id: rec.id })} className="p-1.5 hover:bg-red-50 rounded-lg text-red-400">

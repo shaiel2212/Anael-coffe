@@ -33,21 +33,21 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50" dir="rtl">
+    <div className="flex h-screen bg-rustic-cream" dir="rtl">
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 z-20 bg-rustic-ink/40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 right-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-300 lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
-        <div className="flex items-center gap-3 p-6 border-b border-gray-100">
-          <div className="w-10 h-10 bg-amber-700 rounded-xl flex items-center justify-center">
-            <Coffee className="w-6 h-6 text-white" />
+      <aside className={`fixed inset-y-0 right-0 z-30 w-64 bg-rustic-paper border-l border-rustic-sand/40 shadow-rustic-lg transform transition-transform duration-300 lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
+        <div className="flex items-center gap-3 p-6 border-b border-rustic-sand/40">
+          <div className="w-10 h-10 bg-rustic-wood rounded-xl flex items-center justify-center">
+            <Coffee className="w-6 h-6 text-rustic-cream" />
           </div>
           <div>
-            <p className="font-bold text-gray-900 text-sm">{user?.cafe?.name}</p>
-            <p className="text-xs text-gray-500">{user?.name}</p>
+            <p className="font-heading font-semibold text-rustic-ink text-sm">{user?.cafe?.name}</p>
+            <p className="text-xs text-rustic-inkSoft/70 font-mono">{user?.name}</p>
           </div>
         </div>
 
@@ -59,8 +59,8 @@ export default function Layout({ children }) {
               onClick={() => setSidebarOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
                 isActive(path)
-                  ? 'bg-amber-50 text-amber-700'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  ? 'bg-rustic-sand/40 text-rustic-wood'
+                  : 'text-rustic-inkSoft hover:bg-rustic-sand/20 hover:text-rustic-ink'
               }`}
             >
               <Icon className="w-5 h-5" />
@@ -69,10 +69,10 @@ export default function Layout({ children }) {
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-rustic-sand/40">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-red-700 hover:bg-red-50/80 transition-colors"
           >
             <LogOut className="w-5 h-5" />
             {t('nav.logout')}
@@ -82,17 +82,17 @@ export default function Layout({ children }) {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white shadow-sm z-10 px-4 py-3 flex items-center justify-between lg:hidden">
-          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-gray-100">
-            <Menu className="w-6 h-6 text-gray-600" />
+        <header className="bg-rustic-linen border-b border-rustic-sand/40 shadow-rustic z-10 px-4 py-3 flex items-center justify-between lg:hidden">
+          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg hover:bg-rustic-sand/20 text-rustic-ink">
+            <Menu className="w-6 h-6" />
           </button>
           <div className="flex items-center gap-2">
-            <Coffee className="w-6 h-6 text-amber-700" />
-            <span className="font-bold text-gray-900">{user?.cafe?.name}</span>
+            <Coffee className="w-6 h-6 text-rustic-wood" />
+            <span className="font-heading font-semibold text-rustic-ink">{user?.cafe?.name}</span>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-6 bg-rustic-cream">
           {children}
         </main>
       </div>

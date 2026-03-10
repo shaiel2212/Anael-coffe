@@ -23,45 +23,45 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.name')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.name')}</label>
           <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required />
+            className="w-full px-3 py-2 rustic-input" required />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.phone')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.phone')}</label>
           <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.role')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.role')}</label>
           <input value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}
             placeholder="ברמן, מלצר..."
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.hourlyRate')} (₪)</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.hourlyRate')} (₪)</label>
           <input type="number" step="0.01" value={form.hourly_rate} onChange={(e) => setForm({ ...form, hourly_rate: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.startDate')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.startDate')}</label>
           <input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
         <div className="flex items-end pb-2">
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.is_active} onChange={(e) => setForm({ ...form, is_active: e.target.checked })} className="w-4 h-4 rounded" />
-            <span className="text-sm font-medium text-gray-700">{t('common.active')}</span>
+            <span className="text-sm font-medium text-rustic-ink">{t('common.active')}</span>
           </label>
         </div>
       </div>
       <div className="flex gap-3 justify-end pt-2">
-        <button type="button" onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">{t('common.cancel')}</button>
-        <button type="submit" className="px-4 py-2 bg-amber-700 text-white rounded-xl hover:bg-amber-800">{t('common.save')}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 border border-rustic-sand rounded-xl text-rustic-inkSoft hover:bg-rustic-sand/20">{t('common.cancel')}</button>
+        <button type="submit" className="px-4 py-2 rustic-btn-primary">{t('common.save')}</button>
       </div>
     </form>
   );
@@ -80,32 +80,32 @@ function WorkHourForm({ employees, onSubmit, onCancel }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">עובד</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">עובד</label>
         <select value={form.employee_id} onChange={(e) => setForm({ ...form, employee_id: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required>
+          className="w-full px-3 py-2 rustic-input" required>
           {employees.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.date')}</label>
+        <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.date')}</label>
         <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required />
+          className="w-full px-3 py-2 rustic-input" required />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.clockIn')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.clockIn')}</label>
           <input type="time" value={form.clock_in} onChange={(e) => setForm({ ...form, clock_in: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" required />
+            className="w-full px-3 py-2 rustic-input" required />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t('employees.clockOut')}</label>
+          <label className="block text-sm font-medium text-rustic-ink mb-1">{t('employees.clockOut')}</label>
           <input type="time" value={form.clock_out} onChange={(e) => setForm({ ...form, clock_out: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500" />
+            className="w-full px-3 py-2 rustic-input" />
         </div>
       </div>
       <div className="flex gap-3 justify-end pt-2">
-        <button type="button" onClick={onCancel} className="px-4 py-2 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50">{t('common.cancel')}</button>
-        <button type="submit" className="px-4 py-2 bg-amber-700 text-white rounded-xl hover:bg-amber-800">{t('common.save')}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 border border-rustic-sand rounded-xl text-rustic-inkSoft hover:bg-rustic-sand/20">{t('common.cancel')}</button>
+        <button type="submit" className="px-4 py-2 rustic-btn-primary">{t('common.save')}</button>
       </div>
     </form>
   );
@@ -183,42 +183,42 @@ export default function EmployeesPage() {
   return (
     <div className="space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">{t('employees.title')}</h1>
+        <h1 className="text-2xl font-bold text-rustic-ink">{t('employees.title')}</h1>
       </div>
 
-      <div className="flex gap-2 bg-gray-100 p-1 rounded-xl w-fit">
+      <div className="flex gap-2 bg-rustic-sand/30 p-1 rounded-xl w-fit">
         {['employees', 'workHours', 'salary'].map(tab => (
           <button key={tab} onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab ? 'bg-white shadow-sm text-gray-900' : 'text-gray-600 hover:text-gray-800'}`}>
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab ? 'bg-rustic-linen shadow-rustic text-rustic-ink' : 'text-rustic-inkSoft hover:text-rustic-ink'}`}>
             {tab === 'employees' ? t('employees.title') : tab === 'workHours' ? t('employees.workHours') : t('employees.salarySummary')}
           </button>
         ))}
       </div>
 
       {activeTab === 'employees' && (
-        <div className="bg-white rounded-2xl shadow-sm">
-          <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">{t('employees.title')}</h2>
+        <div className="rustic-card">
+          <div className="p-5 border-b border-rustic-sand/40 flex items-center justify-between">
+            <h2 className="font-heading font-semibold text-rustic-ink">{t('employees.title')}</h2>
             <button onClick={() => setModal({ open: true, type: 'employee', data: null })}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-xl text-sm hover:bg-amber-800">
+              className="flex items-center gap-2 rustic-btn-primary text-sm px-4 py-2">
               <Plus className="w-4 h-4" /> {t('employees.addEmployee')}
             </button>
           </div>
-          <div className="divide-y divide-gray-100">
-            {loading ? <div className="p-8 text-center text-gray-400">{t('common.loading')}</div> :
-              employees.length === 0 ? <div className="p-8 text-center text-gray-400">אין עובדים</div> :
+          <div className="divide-y divide-rustic-sand/40">
+            {loading ? <div className="p-8 text-center text-rustic-inkSoft">{t('common.loading')}</div> :
+              employees.length === 0 ? <div className="p-8 text-center text-rustic-inkSoft">אין עובדים</div> :
                 employees.map(emp => (
-                  <div key={emp.id} className="flex items-center justify-between p-4 hover:bg-gray-50">
+                  <div key={emp.id} className="flex items-center justify-between p-4 hover:bg-rustic-sand/20">
                     <div>
-                      <p className="font-medium text-gray-900">{emp.name}</p>
+                      <p className="font-medium text-rustic-ink">{emp.name}</p>
                       <p className="text-sm text-gray-500">{emp.role} {emp.phone && `· ${emp.phone}`}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      {emp.hourly_rate && <span className="text-sm font-medium text-amber-700">₪{parseFloat(emp.hourly_rate).toFixed(2)}/שעה</span>}
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${emp.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                      {emp.hourly_rate && <span className="text-sm font-medium text-rustic-wood">₪{parseFloat(emp.hourly_rate).toFixed(2)}/שעה</span>}
+                      <span className={`text-xs px-2 py-0.5 rounded-full ${emp.is_active ? 'bg-green-100 text-green-700' : 'bg-rustic-sand/40 text-rustic-inkSoft'}`}>
                         {emp.is_active ? t('common.active') : t('common.inactive')}
                       </span>
-                      <button onClick={() => setModal({ open: true, type: 'employee', data: emp })} className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+                      <button onClick={() => setModal({ open: true, type: 'employee', data: emp })} className="p-2 hover:bg-rustic-sand/30 rounded-lg text-gray-500">
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button onClick={() => setDeleteDialog({ open: true, id: emp.id })} className="p-2 hover:bg-red-50 rounded-lg text-red-400">
@@ -232,33 +232,33 @@ export default function EmployeesPage() {
       )}
 
       {activeTab === 'workHours' && (
-        <div className="bg-white rounded-2xl shadow-sm">
-          <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">{t('employees.workHours')} - החודש</h2>
+        <div className="rustic-card">
+          <div className="p-5 border-b border-rustic-sand/40 flex items-center justify-between">
+            <h2 className="font-heading font-semibold text-rustic-ink">{t('employees.workHours')} - החודש</h2>
             <button onClick={() => setModal({ open: true, type: 'workHour', data: null })}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-700 text-white rounded-xl text-sm hover:bg-amber-800">
+              className="flex items-center gap-2 rustic-btn-primary text-sm px-4 py-2">
               <Plus className="w-4 h-4" /> {t('employees.addWorkHour')}
             </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-rustic-sand/20">
                 <tr>
                   {['עובד', t('employees.date'), t('employees.clockIn'), t('employees.clockOut'), t('employees.hoursWorked')].map(h => (
                     <th key={h} className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-rustic-sand/40">
                 {workHours.length === 0 ? (
-                  <tr><td colSpan={5} className="text-center py-8 text-gray-400">אין רשומות</td></tr>
+                  <tr><td colSpan={5} className="text-center py-8 text-rustic-inkSoft">אין רשומות</td></tr>
                 ) : workHours.map(wh => (
-                  <tr key={wh.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 font-medium text-gray-900">{wh.employee?.name}</td>
-                    <td className="px-4 py-3 text-gray-600 text-sm">{wh.date}</td>
-                    <td className="px-4 py-3 text-gray-600 text-sm">{wh.clock_in}</td>
-                    <td className="px-4 py-3 text-gray-600 text-sm">{wh.clock_out || '-'}</td>
-                    <td className="px-4 py-3 font-medium text-amber-700">{wh.hours_worked ? `${parseFloat(wh.hours_worked).toFixed(1)} שעות` : '-'}</td>
+                  <tr key={wh.id} className="hover:bg-rustic-sand/20">
+                    <td className="px-4 py-3 font-medium text-rustic-ink">{wh.employee?.name}</td>
+                    <td className="px-4 py-3 text-rustic-inkSoft text-sm">{wh.date}</td>
+                    <td className="px-4 py-3 text-rustic-inkSoft text-sm">{wh.clock_in}</td>
+                    <td className="px-4 py-3 text-rustic-inkSoft text-sm">{wh.clock_out || '-'}</td>
+                    <td className="px-4 py-3 font-medium text-rustic-wood">{wh.hours_worked ? `${parseFloat(wh.hours_worked).toFixed(1)} שעות` : '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -268,29 +268,29 @@ export default function EmployeesPage() {
       )}
 
       {activeTab === 'salary' && (
-        <div className="bg-white rounded-2xl shadow-sm">
-          <div className="p-5 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">{t('employees.salarySummary')} - החודש</h2>
+        <div className="rustic-card">
+          <div className="p-5 border-b border-rustic-sand/40">
+            <h2 className="font-heading font-semibold text-rustic-ink">{t('employees.salarySummary')} - החודש</h2>
           </div>
-          <div className="divide-y divide-gray-100">
-            {salary.length === 0 ? <div className="p-8 text-center text-gray-400">אין נתונים</div> :
+          <div className="divide-y divide-rustic-sand/40">
+            {salary.length === 0 ? <div className="p-8 text-center text-rustic-inkSoft">אין נתונים</div> :
               salary.map(s => (
                 <div key={s.employee.id} className="flex items-center justify-between p-4">
                   <div>
-                    <p className="font-medium text-gray-900">{s.employee.name}</p>
+                    <p className="font-medium text-rustic-ink">{s.employee.name}</p>
                     <p className="text-sm text-gray-500">{s.work_days} ימי עבודה · {s.total_hours} שעות</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-lg text-amber-700">₪{s.total_salary.toFixed(2)}</p>
-                    <p className="text-xs text-gray-400">₪{parseFloat(s.employee.hourly_rate || 0).toFixed(2)}/שעה</p>
+                    <p className="font-bold text-lg text-rustic-wood">₪{s.total_salary.toFixed(2)}</p>
+                    <p className="text-xs text-rustic-inkSoft">₪{parseFloat(s.employee.hourly_rate || 0).toFixed(2)}/שעה</p>
                   </div>
                 </div>
               ))}
           </div>
           {salary.length > 0 && (
-            <div className="p-4 bg-amber-50 rounded-b-2xl flex items-center justify-between">
-              <span className="font-semibold text-gray-900">סה"כ לתשלום</span>
-              <span className="font-bold text-xl text-amber-700">
+            <div className="p-4 bg-rustic-sand/30 rounded-b-2xl flex items-center justify-between">
+              <span className="font-heading font-semibold text-rustic-ink">סה"כ לתשלום</span>
+              <span className="font-bold text-xl text-rustic-wood">
                 ₪{salary.reduce((sum, s) => sum + s.total_salary, 0).toFixed(2)}
               </span>
             </div>

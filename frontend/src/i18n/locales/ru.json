@@ -51,7 +51,10 @@
     "qrCode": "QR-код",
     "downloadQR": "Скачать QR",
     "category": "Категория",
-    "description": "Описание"
+    "description": "Описание",
+    "productImage": "Изображение продукта",
+    "uploadImage": "Загрузить изображение",
+    "removeImage": "Удалить изображение"
   },
   "inventory": {
     "title": "Управление запасами",

@@ -33,3 +33,7 @@ Thumbs.db
 *.seed
 frontend/dist/
 frontend/.vite/
+
+# Uploaded product images (stored on server / use external storage in production)
+backend/uploads/
+uploads/

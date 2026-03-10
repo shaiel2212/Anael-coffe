@@ -22,6 +22,13 @@ const errorHandler = (err, req, res, next) => {
     return res.status(401).json({ error: 'ERR001', message: 'Unauthorized' });
   }
 
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ error: 'ERR_VALIDATION', message: 'File too large (max 5MB)' });
+  }
+  if (err.message === 'INVALID_FILE_TYPE') {
+    return res.status(400).json({ error: 'ERR_VALIDATION', message: 'Only images (JPEG, PNG, WebP, GIF) are allowed' });
+  }
+
   res.status(err.status || 500).json({
     error: err.code || 'ERR_SERVER',
     message: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,

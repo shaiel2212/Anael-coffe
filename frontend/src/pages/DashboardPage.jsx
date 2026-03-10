@@ -63,41 +63,41 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6" dir="rtl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('nav.dashboard')}</h1>
-        <p className="text-gray-500 mt-1">ברוך הבא, {user?.name}</p>
+        <h1 className="text-2xl font-heading font-semibold text-rustic-ink">{t('nav.dashboard')}</h1>
+        <p className="text-rustic-inkSoft mt-1">ברוך הבא, {user?.name}</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card) => (
-          <div key={card.label} className="bg-white rounded-2xl p-5 shadow-sm">
+          <div key={card.label} className="rustic-card p-5">
             <div className={`w-11 h-11 ${card.bg} rounded-xl flex items-center justify-center mb-3`}>
               <card.icon className={`w-6 h-6 ${card.color}`} />
             </div>
-            <p className="text-sm text-gray-500">{card.label}</p>
-            <p className={`text-2xl font-bold mt-1 ${card.color}`}>{loading ? '...' : card.value}</p>
+            <p className="text-sm text-rustic-inkSoft">{card.label}</p>
+            <p className={`text-2xl font-heading font-semibold mt-1 ${card.color}`}>{loading ? '...' : card.value}</p>
           </div>
         ))}
       </div>
 
       {/* Low stock alerts */}
       {lowStock.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-sm p-5">
+        <div className="rustic-card p-5">
           <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle className="w-5 h-5 text-amber-500" />
-            <h2 className="font-semibold text-gray-900">{t('inventory.lowStock')}</h2>
-            <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">{lowStock.length}</span>
+            <AlertTriangle className="w-5 h-5 text-amber-600" />
+            <h2 className="font-heading font-semibold text-rustic-ink">{t('inventory.lowStock')}</h2>
+            <span className="text-xs bg-rustic-sand/50 text-rustic-wood px-2 py-0.5 rounded-full font-mono">{lowStock.length}</span>
           </div>
           <div className="space-y-2">
             {lowStock.slice(0, 5).map((item) => (
-              <div key={item.id} className="flex items-center justify-between p-3 bg-amber-50 rounded-xl">
-                <span className="font-medium text-gray-800 text-sm">{item.name}</span>
-                <span className="text-sm text-amber-700">{parseFloat(item.current_quantity).toFixed(2)} {item.unit}</span>
+              <div key={item.id} className="flex items-center justify-between p-3 bg-rustic-sand/20 rounded-xl">
+                <span className="font-medium text-rustic-ink text-sm">{item.name}</span>
+                <span className="text-sm text-rustic-wood font-mono">{parseFloat(item.current_quantity).toFixed(2)} {item.unit}</span>
               </div>
             ))}
           </div>
           {lowStock.length > 5 && (
-            <Link to="/admin/inventory" className="text-sm text-amber-700 font-medium mt-3 block text-center hover:underline">
+            <Link to="/admin/inventory" className="text-sm text-rustic-wood font-medium mt-3 block text-center hover:underline">
               + {lowStock.length - 5} נוספים
             </Link>
           )}
@@ -107,12 +107,12 @@ export default function DashboardPage() {
       {/* Quick actions */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('menu.addProduct'), path: '/admin/menu', icon: '☕', color: 'bg-amber-50 text-amber-700' },
-          { label: t('inventory.addItem'), path: '/admin/inventory', icon: '📦', color: 'bg-blue-50 text-blue-700' },
-          { label: t('employees.addEmployee'), path: '/admin/employees', icon: '👤', color: 'bg-green-50 text-green-700' },
-          { label: t('finance.addRecord'), path: '/admin/finance', icon: '💰', color: 'bg-purple-50 text-purple-700' },
+          { label: t('menu.addProduct'), path: '/admin/menu', icon: '☕', color: 'bg-rustic-sand/40 text-rustic-wood' },
+          { label: t('inventory.addItem'), path: '/admin/inventory', icon: '📦', color: 'bg-rustic-sand/30 text-rustic-woodDark' },
+          { label: t('employees.addEmployee'), path: '/admin/employees', icon: '👤', color: 'bg-rustic-olive/20 text-rustic-olive' },
+          { label: t('finance.addRecord'), path: '/admin/finance', icon: '💰', color: 'bg-rustic-beige/30 text-rustic-ink' },
         ].map((action) => (
-          <Link key={action.label} to={action.path} className={`${action.color} rounded-2xl p-4 flex flex-col items-center gap-2 hover:opacity-80 transition-opacity`}>
+          <Link key={action.label} to={action.path} className={`${action.color} rounded-2xl p-4 flex flex-col items-center gap-2 hover:opacity-90 transition-opacity border border-rustic-sand/30`}>
             <span className="text-2xl">{action.icon}</span>
             <span className="text-sm font-medium text-center">{action.label}</span>
           </Link>

@@ -51,7 +51,10 @@
     "qrCode": "QR Code",
     "downloadQR": "Download QR",
     "category": "Category",
-    "description": "Description"
+    "description": "Description",
+    "productImage": "Product image",
+    "uploadImage": "Upload image",
+    "removeImage": "Remove image"
   },
   "inventory": {
     "title": "Inventory Management",

@@ -23,12 +23,17 @@ const login = async (req, res, next) => {
       return res.status(400).json({ error: 'ERR_VALIDATION', message: 'Email and password are required' });
     }
 
+    const emailNorm = email.toLowerCase().trim();
     const user = await User.findOne({
-      where: { email: email.toLowerCase(), is_active: true },
+      where: { email: emailNorm, is_active: true },
       include: [{ model: Cafe, as: 'cafe' }],
     });
 
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
+      if (process.env.NODE_ENV !== 'production') {
+        const logger = require('../utils/logger');
+        logger.info(`Login 401: email=${emailNorm} (user ${user ? 'found, wrong password' : 'not found'})`);
+      }
       return res.status(401).json({ error: 'ERR001', message: 'Invalid credentials' });
     }
 

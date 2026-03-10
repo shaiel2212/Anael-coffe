@@ -51,7 +51,10 @@
     "qrCode": "QR Code",
     "downloadQR": "הורד QR",
     "category": "קטגוריה",
-    "description": "תיאור"
+    "description": "תיאור",
+    "productImage": "תמונת מוצר",
+    "uploadImage": "העלה תמונה",
+    "removeImage": "הסר תמונה"
   },
   "inventory": {
     "title": "ניהול מלאי",

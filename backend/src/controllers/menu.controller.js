@@ -172,7 +172,8 @@ const createProduct = async (req, res, next) => {
     const product = await Product.create({
       category_id, name_he, name_en, name_ru,
       description_he, description_en, description_ru,
-      price, allergens: allergens || [],
+      price, image_url: req.body.image_url || null,
+      allergens: allergens || [],
       is_available: is_available !== undefined ? is_available : true,
       is_visible: is_visible !== undefined ? is_visible : true,
       display_order: display_order || 0,
@@ -216,8 +217,22 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
+const uploadProductImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'ERR_VALIDATION', message: 'No image file uploaded' });
+    }
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const url = `${baseUrl}/api/v1/uploads/products/${req.file.filename}`;
+    res.status(201).json({ url });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getMenu, generateQR,
   getCategories, createCategory, updateCategory, deleteCategory,
   getProducts, createProduct, updateProduct, deleteProduct,
+  uploadProductImage,
 };
