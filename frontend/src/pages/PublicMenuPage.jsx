@@ -66,6 +66,7 @@ export default function PublicMenuPage() {
   const getDesc = (item) => item[`description_${lang}`] || item.description_he || item.description_en;
 
   const activeProducts = categories.find(c => c.id === activeCategory)?.products || [];
+  const productsWithImages = categories.flatMap(c => c.products || []).filter(p => p.image_url);
 
   const accentColor = cafe.primary_color || '#5C4033';
 
@@ -97,6 +98,25 @@ export default function PublicMenuPage() {
             ))}
           </div>
         </div>
+
+        {/* Product images strip - auto-scrolling marquee */}
+        {productsWithImages.length > 0 && (
+          <div className="w-full overflow-hidden bg-rustic-sand/20">
+            <div className="flex gap-3 animate-marquee py-3" style={{ width: 'max-content' }}>
+              {[...productsWithImages, ...productsWithImages].map((product, i) => (
+                <button
+                  key={`strip-${product.id}-${i}`}
+                  type="button"
+                  onClick={() => setLightboxImage({ url: product.image_url, alt: getName(product) })}
+                  className="h-24 w-24 flex-shrink-0 rounded-xl overflow-hidden ring-1 ring-rustic-sand/40 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rustic-wood/50"
+                  aria-label={getName(product)}
+                >
+                  <img src={product.image_url} alt={getName(product)} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Categories scrollable tabs */}
         <div className="max-w-2xl mx-auto px-4 pb-3 overflow-x-auto flex gap-2 scrollbar-hide">
